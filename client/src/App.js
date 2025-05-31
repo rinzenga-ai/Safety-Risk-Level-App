@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
@@ -6,6 +6,8 @@ function App() {
   const [policies, setPolicies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const BACKEND_URL = 'https://safety-risk-backend.onrender.com';
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -21,7 +23,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/upload', formData);
+      const response = await axios.post(`${BACKEND_URL}/api/upload`, formData);
       setPolicies(response.data.sort((a, b) => b.riskScore - a.riskScore));
     } catch (err) {
       console.error('Upload error:', err);
@@ -35,7 +37,7 @@ function App() {
     if (policies.length === 0) return;
 
     try {
-      const response = await axios.post('http://localhost:5000/api/download', policies, {
+      const response = await axios.post(`${BACKEND_URL}/api/download`, policies, {
         responseType: 'blob',
       });
 
@@ -55,7 +57,6 @@ function App() {
     }
   };
 
-  // ✅ Format currency and percent for display
   const formatValue = (key, value) => {
     if (["Incurred Amount", "Inforce Premium", "Inforce Exposure"].includes(key)) {
       const num = parseFloat(value.toString().replace(/[^0-9.-]/g, '')) || 0;
