@@ -17,7 +17,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: '/tmp' });
 
 function getQuantileThresholds(values, numQuantiles = 6) {
   const sorted = values.slice().sort((a, b) => a - b);
